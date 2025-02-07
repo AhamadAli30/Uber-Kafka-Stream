@@ -1,5 +1,8 @@
+// Updated driver.js with driver profile and Kafka integration
+
 document.addEventListener("DOMContentLoaded", () => {
     const rideList = document.getElementById("rideList");
+    const driverProfile = { name: "John", phone: "9988776655" };
 
     async function fetchRides() {
         try {
@@ -9,19 +12,33 @@ document.addEventListener("DOMContentLoaded", () => {
             rideList.innerHTML = "";
             rides.forEach((ride, index) => {
                 const listItem = document.createElement("li");
-                listItem.textContent = `Ride ${index + 1}: ${ride.source} to ${ride.destination}, ${ride.passengers} passengers, $${ride.price}`;
+                listItem.classList.add("ride-item");
                 
+                const rideDetails = `
+                    <div class="ride-details">
+                        <p><strong>Ride ${index + 1}:</strong> ${ride.source} to ${ride.destination}</p>
+                        <p><strong>Passengers:</strong> ${ride.passengers}</p>
+                        <p><strong>Price:</strong> $${ride.price}</p>
+                    </div>
+                `;
+
+                listItem.innerHTML = rideDetails;
+
                 const acceptButton = document.createElement("button");
-                acceptButton.textContent = "Accept";
+                acceptButton.textContent = "Accept Ride";
+                acceptButton.classList.add("accept-button");
                 acceptButton.onclick = async () => {
                     await fetch("http://localhost:3000/accept-ride", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ rideId: ride.id })
+                        body: JSON.stringify({ 
+                            rideId: ride.id, 
+                            driverName: driverProfile.name, 
+                            phone: driverProfile.phone 
+                        })
                     });
 
-                    alert("Ride accepted!");
-                    fetchRides();
+                    rideList.removeChild(listItem);
                 };
 
                 listItem.appendChild(acceptButton);
@@ -33,5 +50,5 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     fetchRides();
-    setInterval(fetchRides, 5000); // Poll for new rides every 5 seconds
+    setInterval(fetchRides, 5000);
 });
