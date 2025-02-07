@@ -4,25 +4,95 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ride Booking - Customer</title>
+    <script src="https://cdn.socket.io/4.0.1/socket.io.min.js" defer></script>
     <script src="customer.js" defer></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #4CAF50;
+        }
+        .form-container {
+            max-width: 500px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            display: block;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #status {
+            font-weight: bold;
+            text-align: center;
+            margin-top: 20px;
+        }
+        #notification {
+            display: none;
+            max-width: 500px;
+            margin: 20px auto;
+            padding: 15px;
+            background-color: #dff0d8;
+            color: #3c763d;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 1.1em;
+            border: 1px solid #3c763d;
+        }
+    </style>
 </head>
 <body>
     <h1>Book a Ride</h1>
-    <form id="rideForm">
-        <label for="source">Source:</label>
-        <input type="text" id="source" required>
-        
-        <label for="destination">Destination:</label>
-        <input type="text" id="destination" required>
-        
-        <label for="passengers">Number of Passengers:</label>
-        <input type="number" id="passengers" min="1" required>
-        
-        <label for="price">Price (in $):</label>
-        <input type="number" id="price" min="1" required>
+    <div class="form-container">
+        <form id="rideForm">
+            <label for="source">Source:</label>
+            <input type="text" id="source" placeholder="Enter source location" required>
+            
+            <label for="destination">Destination:</label>
+            <input type="text" id="destination" placeholder="Enter destination" required>
+            
+            <label for="passengers">Number of Passengers:</label>
+            <input type="number" id="passengers" min="1" required>
+            
+            <label for="time">Estimated Time (minutes):</label>
+            <input type="text" id="time" readonly>
 
-        <button type="submit">Submit Ride</button>
-    </form>
-    <p id="status"></p>
+            <label for="price">Estimated Price (in $):</label>
+            <input type="text" id="price" readonly>
+
+            <button type="submit">Submit Ride</button>
+        </form>
+        <p id="status"></p>
+    </div>
+    
+    <div id="notification"></div>
+    <div id="acceptedRides" class="form-container"></div>
 </body>
 </html>

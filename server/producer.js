@@ -1,3 +1,5 @@
+// Updated producer.js to send driver details upon ride acceptance without disturbing ride request
+
 const express = require("express");
 const { Kafka } = require("kafkajs");
 const cors = require("cors");
@@ -17,7 +19,6 @@ const kafka = new Kafka({
 
 const producer = kafka.producer();
 
-// Connect to Kafka producer
 const runProducer = async () => {
     await producer.connect();
     console.log("Kafka Producer connected");
@@ -25,7 +26,7 @@ const runProducer = async () => {
 
 runProducer();
 
-// API Endpoint to book a ride
+// API Endpoint to book a ride (unchanged)
 app.post("/book-ride", async (req, res) => {
     const rideDetails = req.body;
 
@@ -42,7 +43,26 @@ app.post("/book-ride", async (req, res) => {
     }
 });
 
-// Start the server
+const accepted_ride = [];
+
+// API Endpoint for ride acceptance
+app.post("/accept-ride", async (req, res) => {
+    const { rideId, driverName, phone } = req.body;
+
+    try {
+        accepted_ride.push({rideId,driverName,phone});
+        res.json({ message: "Ride accepted and customer notified!" });
+    } catch (error) {
+        console.error("Error notifying customer:", error);
+        res.status(500).json({ message: "Failed to notify customer" });
+    }
+});
+
+app.get("/accept-ride", async (req,res)=> {
+    return res.json(accepted_ride);
+})
+
+
 app.listen(PORT, () => {
     console.log(`Producer Server running at http://localhost:${PORT}`);
 });
