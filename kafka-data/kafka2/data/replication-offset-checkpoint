@@ -1,5 +1,5 @@
 0
-28
+29
 __consumer_offsets 21 0
 __consumer_offsets 27 0
 __consumer_offsets 7 0
@@ -10,17 +10,18 @@ __consumer_offsets 41 0
 __consumer_offsets 33 0
 __consumer_offsets 23 0
 __consumer_offsets 49 0
-ride-accepted 0 6
+ride-accepted 0 0
 __consumer_offsets 47 0
 __consumer_offsets 31 0
 __consumer_offsets 3 0
 __consumer_offsets 37 0
-ride-requests 0 14
+ride-requests 0 2
 __consumer_offsets 15 0
 __consumer_offsets 17 0
 __confluent.support.metrics 0 0
 __consumer_offsets 19 0
 __consumer_offsets 11 0
+ride-requests 1 2
 __consumer_offsets 13 0
 __consumer_offsets 43 0
 __consumer_offsets 39 0
