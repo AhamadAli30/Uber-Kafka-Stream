@@ -1,8 +1,21 @@
-// Updated driver.js with driver profile and Kafka integration
-
 document.addEventListener("DOMContentLoaded", () => {
     const rideList = document.getElementById("rideList");
-    const driverProfile = { name: "John", phone: "9988776655" };
+
+    // Ask for driver details using alert prompt
+    const driverName = prompt("Enter your name:");
+    const driverPhone = prompt("Enter your phone number:");
+
+    // Update the profile section in the HTML
+    document.querySelector(".profile").innerHTML = `
+        <h2>Driver Profile</h2>
+        <p><strong>Name:</strong> ${driverName || "N/A"}</p>
+        <p><strong>Phone:</strong> ${driverPhone || "N/A"}</p>
+    `;
+
+    const driverProfile = { 
+        name: driverName || "Unknown", 
+        phone: driverPhone || "0000000000" 
+    };
 
     async function fetchRides() {
         try {

@@ -29,6 +29,7 @@ let availableRides = [];
 const runConsumer = async () => {
     await consumer.connect();
     await consumer.subscribe({ topic: "ride-requests", fromBeginning: true });
+    await consumer.subscribe({ topic: "ride-accepted", fromBeginning: true });
 
     await consumer.run({
         eachMessage: async ({ topic, message }) => {
@@ -38,6 +39,15 @@ const runConsumer = async () => {
                 data.id = Date.now();
                 availableRides.push(data);
                 console.log("New ride request received:", data);
+            }
+
+            if (topic === "ride-accepted") {
+                console.log("Ride accepted:", data);
+                io.emit("rideAccepted", {
+                    message: "Ride Accepted",
+                    driverName: data.driverName,
+                    phone: data.phone
+                });
             }
         }
     });
